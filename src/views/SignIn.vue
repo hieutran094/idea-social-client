@@ -1,11 +1,4 @@
 <template>
-  <div class="container top-0 position-sticky z-index-sticky">
-    <div class="row">
-      <div class="col-12">
-        <navbar isBlur="blur blur-rounded my-3 py-2 start-0 end-0 mx-4 shadow" btnBackground="bg-gradient-success" v-bind:darkMode="true" />
-      </div>
-    </div>
-  </div>
   <main class="mt-0 main-content main-content-bg">
     <section>
       <div class="page-header min-vh-75">
@@ -32,7 +25,7 @@
                 <div class="px-1 pt-0 text-center card-footer px-lg-2">
                   <p class="mx-auto mb-4 text-sm">
                     Don't have an account?
-                    <a href="javascript:;" class="text-info text-gradient font-weight-bold">Sign up</a>
+                    <router-link to="/sign-up" class="text-info text-gradient font-weight-bold">Sign up</router-link>
                   </p>
                 </div>
               </div>
@@ -42,7 +35,9 @@
                 <div
                   class="bg-cover oblique-image position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6"
                   :style="{
-                    backgroundImage: 'url(' + require('@/assets/img/curved-images/curved9.jpg') + ')',
+                    backgroundImage: 'url(' + require('@/assets/img/login_logo.svg') + ')',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundSize: 'auto',
                   }"
                 ></div>
               </div>
@@ -56,19 +51,25 @@
 </template>
 
 <script>
-import Navbar from '@/examples/PageLayout/Navbar.vue'
 import AppFooter from '@/examples/PageLayout/Footer.vue'
+import AuthService from '../services/AuthService'
 const body = document.getElementsByTagName('body')[0]
 
 export default {
   name: 'signin',
   components: {
-    Navbar,
     AppFooter,
   },
   methods: {
-    onSubmit(values) {
-      console.log(values, null, 2)
+    async onSubmit(formData) {
+      try {
+        const { success, data } = await AuthService.login(this.$axios, formData)
+        if (success) {
+          this.$store.dispatch('login', data)
+        }
+      } catch (e) {
+        console.log(e)
+      }
     },
   },
   beforeMount() {

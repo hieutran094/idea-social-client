@@ -56,22 +56,10 @@
       </li>
     </ul>
   </div>
-  <div class="pt-3 mx-3 mt-3 sidenav-footer">
-    <sidenav-card
-      :class="cardBg"
-      textPrimary="Need Help?"
-      textSecondary="Please check our docs"
-      href="#/learning-lab/vue/overview/soft-ui-dashboard/"
-      linkText="Documentation"
-      iconClass="ni ni-diamond"
-    />
-    <a class="btn bg-gradient-success mt-4 w-100" href="#/product/vue-soft-ui-dashboard-pro?ref=vsud" type="button">Upgrade to pro</a>
-  </div>
 </template>
 <script>
 import Icon from '@/components/Icon.vue'
 import SidenavCollapse from './SidenavCollapse.vue'
-import SidenavCard from './SidenavCard.vue'
 
 export default {
   name: 'SidenavList',
@@ -88,7 +76,6 @@ export default {
   components: {
     Icon,
     SidenavCollapse,
-    SidenavCard,
   },
   methods: {
     getRoute() {
