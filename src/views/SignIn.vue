@@ -72,18 +72,6 @@ export default {
       }
     },
   },
-  computed: {
-    user() {
-      return this.$store.state.user
-    },
-  },
-  watch: {
-    user() {
-      if (this.user) {
-        this.$router.push('/')
-      }
-    },
-  },
   beforeMount() {
     this.$store.state.hideConfigButton = true
     this.$store.state.showNavbar = false
