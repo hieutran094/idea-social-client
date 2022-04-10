@@ -1,4 +1,5 @@
 import { createStore } from 'vuex'
+import { axios } from '../plugins/axios'
 
 export default createStore({
   state: {
@@ -14,8 +15,14 @@ export default createStore({
     showNavbar: true,
     showFooter: true,
     showMain: true,
+    token: null,
+    authenticated: false,
+    user: null,
   },
   mutations: {
+    setUser: (state, user) => (state.user = user),
+    setAuth: (state, status) => (state.authenticated = status),
+    setToken: (state, accessToken) => (state.token = accessToken),
     toggleConfigurator(state) {
       state.showConfig = !state.showConfig
     },
@@ -49,6 +56,23 @@ export default createStore({
     },
   },
   actions: {
+    login({ commit }, data) {
+      axios.defaults.headers['Authorization'] = `Bearer ${data.token}`
+      commit('setToken', data.token)
+      localStorage.setItem('accessToken', data.token)
+      delete data.token
+      commit('setUser', data)
+      commit('setAuth', true)
+    },
+    logout({ commit }) {
+      commit('setAuth', false)
+      commit('setUser', null)
+      commit('setToken', null)
+      localStorage.setItem('accessToken', '')
+    },
+    fetchAccessToken({ commit }) {
+      commit('setToken', localStorage.getItem('accessToken'))
+    },
     toggleSidebarColor({ commit }, payload) {
       commit('sidebarType', payload)
     },

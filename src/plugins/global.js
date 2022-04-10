@@ -4,6 +4,7 @@ import VsudButton from '@/components/VsudButton.vue'
 import VsudAvatar from '@/components/VsudAvatar.vue'
 import VsudBadge from '@/components/VsudBadge.vue'
 import VsudCheckbox from '@/components/VsudCheckbox.vue'
+import VsudModal from '@/components/VsudModal.vue'
 export default {
   install(app) {
     app.component(VsudInput.name, VsudInput)
@@ -12,5 +13,6 @@ export default {
     app.component(VsudButton.name, VsudButton)
     app.component(VsudAvatar.name, VsudAvatar)
     app.component(VsudBadge.name, VsudBadge)
+    app.component(VsudModal.name, VsudModal)
   },
 }
