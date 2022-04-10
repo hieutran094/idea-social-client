@@ -11,7 +11,7 @@ COPY . .
 
 RUN sed -i -e 's/$BASE_URL/'"$BASE_URL"'/g' ./.env.production
 
-RUN yarn build --mode production
+RUN yarn build
 
 # Nginx config
 
