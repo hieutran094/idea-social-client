@@ -9,7 +9,9 @@ RUN yarn install
 
 COPY . .
 
-RUN yarn build
+RUN sed -i -e 's/$BASE_URL/'"$BASE_URL"'/g' ./.env.production
+
+RUN yarn build --mode production
 
 # Nginx config
 
