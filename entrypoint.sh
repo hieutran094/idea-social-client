@@ -6,5 +6,8 @@ do
   fi
   envsubst '$VUE_APP_API_URL' < $file.tmpl.js > $file
 done
+cp etc/nginx/nginx.conf etc/nginx/nginx.tmpl.conf
+envsubst '$PORT' < etc/nginx/nginx.tmpl.conf > etc/nginx/nginx.conf
+
 echo "Starting Nginx"
 nginx -g 'daemon off;'
