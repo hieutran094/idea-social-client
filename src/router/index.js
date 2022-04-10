@@ -54,6 +54,7 @@ router.beforeEach(async (to, from, next) => {
       } else next()
     }
   } catch (err) {
+    localStorage.setItem('accessToken', '')
     next({
       name: 'Sign In',
       params: { nextUrl: to.fullPath },
