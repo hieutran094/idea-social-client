@@ -13,7 +13,7 @@
                 <div class="card-body">
                   <validate-form class="text-start" @submit="onSubmit" v-slot="{ meta }">
                     <label>Email</label>
-                    <vsud-input type="email" placeholder="Email" name="email" rules="required|email" />
+                    <vsud-input type="email" placeholder="Email" name="email" rules="required|isEmailOrAdmin" />
                     <label>Password</label>
                     <vsud-input type="password" placeholder="Password" name="password" rules="required|min:6" />
                     <vsud-switch id="rememberMe" checked> Remember me </vsud-switch>
@@ -38,6 +38,7 @@
                     backgroundImage: 'url(' + require('@/assets/img/login_logo.svg') + ')',
                     backgroundRepeat: 'no-repeat',
                     backgroundSize: 'auto',
+                    marginTop: '100px',
                   }"
                 ></div>
               </div>

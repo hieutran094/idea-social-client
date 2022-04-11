@@ -10,10 +10,10 @@
         </div>
         <ul class="navbar-nav justify-content-end">
           <li class="nav-item d-flex align-items-center">
-            <router-link :to="{ name: 'Sign In' }" class="px-0 nav-link font-weight-bold" :class="textWhite ? textWhite : 'text-body'">
-              <i class="fa fa-user me-sm-1"></i>
-              <span class="d-sm-inline d-none">Sign In </span>
-            </router-link>
+            <a class="px-0 nav-link font-weight-bold cursor-pointer" :class="textWhite ? textWhite : 'text-body'" @click="logout">
+              <i class="fa fa-sign-out me-sm-1"></i>
+              <span class="d-sm-inline d-none"> Logout </span>
+            </a>
           </li>
           <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
             <a href="#" @click="toggleSidebar" class="p-0 nav-link text-body" id="iconNavbarSidenav">
@@ -140,7 +140,7 @@ export default {
   },
   methods: {
     ...mapMutations(['navbarMinimize', 'toggleConfigurator']),
-    ...mapActions(['toggleSidebarColor']),
+    ...mapActions(['toggleSidebarColor', 'logout']),
 
     toggleSidebar() {
       this.toggleSidebarColor('bg-white')
@@ -154,10 +154,14 @@ export default {
     currentRouteName() {
       return this.$route.name
     },
+    user() {
+      return this.$store.state.user
+    },
   },
   updated() {
     const navbar = document.getElementById('navbarBlur')
     window.addEventListener('scroll', () => {
+      if (!navbar) return
       if (window.scrollY > 10 && this.$store.state.isNavFixed) {
         navbar.classList.add('blur')
         navbar.classList.add('position-sticky')
@@ -168,6 +172,13 @@ export default {
         navbar.classList.remove('shadow-blur')
       }
     })
+  },
+  watch: {
+    user() {
+      if (!this.user) {
+        this.$router.push('/sign-in')
+      }
+    },
   },
 }
 </script>
