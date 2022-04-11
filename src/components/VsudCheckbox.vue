@@ -1,6 +1,6 @@
 <template>
   <div class="form-check">
-    <input class="form-check-input" type="checkbox" :name="name" :id="id" :checked="checked" />
+    <input class="form-check-input" type="checkbox" :name="name" :id="id" :checked="checked" @change="handleChange" />
     <label :for="id" class="custom-control-label">
       <slot />
     </label>
@@ -8,12 +8,21 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from 'vue'
+export default defineComponent({
   name: 'vsud-checkbox',
   props: {
     name: String,
     id: String,
-    checked: String,
+    checked: {
+      type: [Boolean],
+      default: false,
+    },
   },
-}
+  methods: {
+    handleChange(e) {
+      this.$emit('update:checked', e.target.checked)
+    },
+  },
+})
 </script>

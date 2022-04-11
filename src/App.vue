@@ -18,7 +18,7 @@
   <loading v-model:active="isLoading" :is-full-page="true" :opacity="0.9" color="#6366F1" loader="dots" :height="60">
     <img :src="loadingSvg" />
   </loading>
-  <notifications group="admin" position="top right" closeOnClick="true" />
+  <notifications group="admin" position="top right" :closeOnClick="true" />
 </template>
 <script>
 import Sidenav from './examples/Sidenav'
