@@ -20,8 +20,12 @@ export default createStore({
     user: null,
     isLoading: false,
     notification: null,
+    limit: 5,
+    page: 1,
   },
   mutations: {
+    setLimit: (state, limit) => (state.limit = limit),
+    setPage: (state, page) => (state.page = page),
     setLoading: (state, isLoading) => (state.isLoading = isLoading),
     setNotification: (state, notification) => (state.notification = notification),
     setUser: (state, user) => (state.user = user),
@@ -90,8 +94,16 @@ export default createStore({
       let notification = ''
       if (typeof data.message === 'string') {
         notification = data.message
+      } else if (typeof data.message === 'object') {
+        notification = data.message.message
       }
       commit('setNotification', { text: notification, type: data.success ? 'success' : 'error' })
+    },
+    setLimit({ commit }, data) {
+      commit('setLimit', data)
+    },
+    setPage({ commit }, data) {
+      commit('setPage', data)
     },
   },
   getters: {},

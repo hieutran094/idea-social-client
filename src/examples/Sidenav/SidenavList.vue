@@ -31,10 +31,10 @@
         </sidenav-collapse>
       </li>
       <li class="mt-3 nav-item">
-        <h6 class="text-xs ps-4 text-uppercase font-weight-bolder opacity-6 ms-2">PAGES</h6>
+        <h6 class="text-xs ps-4 text-uppercase font-weight-bolder opacity-6 ms-2">Manage</h6>
       </li>
       <li class="nav-item">
-        <sidenav-collapse navText="Profile" :to="{ name: 'Profile' }">
+        <sidenav-collapse navText="Department" :to="{ name: 'List Department' }">
           <template v-slot:icon>
             <icon name="customer-support" />
           </template>

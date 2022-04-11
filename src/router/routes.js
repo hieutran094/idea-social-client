@@ -6,6 +6,9 @@ import Profile from '@/views/Profile.vue'
 import SignIn from '@/views/SignIn.vue'
 import SignUp from '@/views/SignUp.vue'
 import EditPage from '@/views/Edit.vue'
+import ListDepartment from '@/views/department/Index.vue'
+import CreateDepartment from '@/views/department/Create.vue'
+import EditDepartment from '@/views/department/Edit.vue'
 
 export default [
   {
@@ -17,6 +20,30 @@ export default [
     path: '/dashboard',
     name: 'Dashboard',
     component: Dashboard,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/department',
+    name: 'List Department',
+    component: ListDepartment,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/department/edit/:id',
+    name: 'Edit Department',
+    component: EditDepartment,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/department/create',
+    name: 'Create Department',
+    component: CreateDepartment,
     meta: {
       requiresAuth: true,
     },

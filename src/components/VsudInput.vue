@@ -7,13 +7,15 @@
       <validate-field
         :type="type"
         class="form-control"
+        :validateOnInput="true"
         :class="getClasses(size, valid)"
         :name="name"
         :id="id"
-        :value="value"
+        :modelValue="value"
         :placeholder="placeholder"
         :isRequired="isRequired"
         :rules="rules"
+        @input="handleInput"
       />
       <span v-if="iconDir === 'right'" class="input-group-text">
         <i :class="getIcon(icon)"></i>
@@ -51,6 +53,9 @@ export default {
     rules: String,
   },
   methods: {
+    handleInput(e) {
+      this.$emit('update:value', e.target.value)
+    },
     getClasses: (size, valid) => {
       let sizeValue, isValidValue
 
