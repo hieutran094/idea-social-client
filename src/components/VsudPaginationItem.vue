@@ -42,3 +42,9 @@ export default {
   },
 }
 </script>
+<style scoped>
+.page-item .page-link,
+.page-item span {
+  border-radius: 30% !important;
+}
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <ul class="pagination" :class="getClasses(color, size)">
+  <ul class="pagination d-flex justify-content-end px-4 mt-1" :class="getClasses(color, size)">
     <slot />
   </ul>
 </template>
