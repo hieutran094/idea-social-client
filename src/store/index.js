@@ -18,8 +18,12 @@ export default createStore({
     token: null,
     authenticated: false,
     user: null,
+    isLoading: false,
+    notification: null,
   },
   mutations: {
+    setLoading: (state, isLoading) => (state.isLoading = isLoading),
+    setNotification: (state, notification) => (state.notification = notification),
     setUser: (state, user) => (state.user = user),
     setAuth: (state, status) => (state.authenticated = status),
     setToken: (state, accessToken) => (state.token = accessToken),
@@ -56,6 +60,12 @@ export default createStore({
     },
   },
   actions: {
+    startLoading({ commit }) {
+      commit('setLoading', true)
+    },
+    stopLoading({ commit }) {
+      commit('setLoading', false)
+    },
     login({ commit }, data) {
       axios.defaults.headers['Authorization'] = `Bearer ${data.token}`
       commit('setToken', data.token)
@@ -75,6 +85,13 @@ export default createStore({
     },
     toggleSidebarColor({ commit }, payload) {
       commit('sidebarType', payload)
+    },
+    handleNotifications({ commit }, data) {
+      let notification = ''
+      if (typeof data.message === 'string') {
+        notification = data.message
+      }
+      commit('setNotification', { text: notification, type: data.success ? 'success' : 'error' })
     },
   },
   getters: {},
