@@ -62,13 +62,16 @@ export default {
   },
   methods: {
     async onSubmit(formData) {
+      this.$store.dispatch('startLoading')
       try {
-        const { success, data } = await AuthService.login(this.$axios, formData)
-        if (success) {
-          this.$store.dispatch('login', data)
-        }
-      } catch (e) {
-        console.log(e)
+        const res = await AuthService.login(this.$axios, formData)
+        if (res.success) {
+          this.$store.dispatch('login', res.data)
+        } else throw res
+      } catch (err) {
+        this.$store.dispatch('handleNotifications', { message: typeof err === 'string' ? err : err.message })
+      } finally {
+        this.$store.dispatch('stopLoading')
       }
     },
   },
