@@ -11,7 +11,15 @@
                 >
               </div>
               <div class="input-group">
-                <vsud-input type="text" name="search" iconDir="left" icon="fas fa-search" :placeholder="'Type here...'" />
+                <vsud-input
+                  type="text"
+                  v-model:value="keyword"
+                  name="search"
+                  iconDir="left"
+                  icon="fas fa-search"
+                  :placeholder="'Enter to search...'"
+                  @keyup.enter="search(keyword)"
+                />
               </div>
             </div>
           </div>
@@ -21,7 +29,7 @@
                 <thead>
                   <tr>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -33,11 +41,13 @@
                         </div>
                       </div>
                     </td>
-                    <td class="align-middle">
+                    <td class="align-middle text-center">
                       <router-link :to="`/department/edit/${item.id}`"
                         ><vsud-button color="secondary" variant="outline" class="mb-auto py-2"
                           ><i class="fa fa-pencil"></i> Edit</vsud-button
                         ></router-link
+                      ><vsud-button color="secondary" variant="outline" class="mb-auto py-2 mx-2" @click="onDelete(item)"
+                        ><i class="fa fa-trash"></i> Delete</vsud-button
                       >
                     </td>
                   </tr>
@@ -59,29 +69,25 @@
         </div>
       </div>
     </div>
+    <vsud-modal :isOpen="isOpenModal" @close="isOpenModal = false">
+      <template v-slot:header><h6 class="modal-title font-weight-bolder">Confirm delete</h6></template>
+      <p class="font-weight-bolder">Are you sure to delete {{ currentData.name }}?</p>
+      <template v-slot:footer>
+        <vsud-button color="light" data-bs-dismiss="modal">Close</vsud-button>
+        <vsud-button color="dark" @click="submitDelete()">Confirm</vsud-button></template
+      >
+    </vsud-modal>
   </div>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
 import DepartmentService from '@/services/DepartmentService.js'
-// const paginate = (currentPage, lastPage, onSides) => {
-//   let pages = []
-//   for (let i = 1; i <= lastPage; i++) {
-//     let offset = i == 1 || lastPage ? onSides + 1 : onSides
-//     if (i == 1 || (currentPage - offset <= i && currentPage + offset >= i) || i == currentPage || i == lastPage) {
-//       pages.push(i)
-//     } else if (i == currentPage - (offset + 1) || i == currentPage + (offset + 1)) {
-//       pages.push('...')
-//     }
-//   }
-//   return pages
-// }
 export default defineComponent({
   name: 'ListDepartment',
   components: {},
   data() {
-    return { departments: [], lastPage: 1 }
+    return { departments: [], lastPage: 1, isOpenModal: false, currentData: { id: '', name: '' }, keyword: null }
   },
   async mounted() {
     await this.search()
@@ -91,11 +97,6 @@ export default defineComponent({
       return this.$store.state.page
     },
     paginationItems() {
-      //   const arr = []
-      //   //   if (this.lastPage <= 4) arr = [1, 2, 3, 4]
-      //   //   else {
-      //   arr = paginate(6, this.lastPage, 4)
-      //   }
       return this.paginate(this.currentPage, this.lastPage, 1)
     },
   },
@@ -110,7 +111,6 @@ export default defineComponent({
           pages.push('...')
         }
       }
-      //   if (pages.find((item) => item === '...')) pages.shift()
       return pages
     },
     async changePage(number) {
@@ -118,10 +118,10 @@ export default defineComponent({
       this.$store.dispatch('setPage', number)
       await this.search()
     },
-    async search() {
+    async search(keyword = null) {
       this.$store.dispatch('startLoading')
       try {
-        const res = await DepartmentService.search(this.$axios, this.$store)
+        const res = await DepartmentService.search(this.$axios, this.$store, keyword)
         if (res.success) {
           const { data, lastPage } = res.data
           this.departments = data
@@ -129,6 +129,25 @@ export default defineComponent({
         } else throw res
       } catch (err) {
         this.$store.dispatch('handleNotifications', { message: typeof err === 'string' ? err : err.message })
+      } finally {
+        this.$store.dispatch('stopLoading')
+      }
+    },
+    onDelete(data) {
+      this.currentData = data
+      this.isOpenModal = true
+    },
+    async submitDelete() {
+      this.$store.dispatch('startLoading')
+      try {
+        const res = await DepartmentService.deleteOne(this.$axios, this.currentData.id)
+        if (res.success) {
+          await this.search()
+        }
+        this.isOpenModal = false
+        this.$store.dispatch('handleNotifications', res)
+      } catch (err) {
+        this.$store.dispatch('handleNotifications', { message: err.response.data })
       } finally {
         this.$store.dispatch('stopLoading')
       }

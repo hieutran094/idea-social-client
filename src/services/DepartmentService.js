@@ -23,4 +23,8 @@ export default {
     const res = await axios.put(`/api/v1/department/${id}`, dto)
     return res.data
   },
+  async deleteOne(axios, id) {
+    const res = await axios.delete(`/api/v1/department/${id}`)
+    return res.data
+  },
 }

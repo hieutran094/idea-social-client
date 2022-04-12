@@ -47,7 +47,7 @@ export default defineComponent({
     return {
       isValid: true,
       currentData: {
-        name: 'aaaa',
+        name: '',
       },
     }
   },
