@@ -36,21 +36,14 @@
       <li class="nav-item">
         <sidenav-collapse navText="Department" :to="{ name: 'List Department' }">
           <template v-slot:icon>
+            <icon name="virtual-reality" />
+          </template>
+        </sidenav-collapse>
+      </li>
+      <li class="nav-item">
+        <sidenav-collapse navText="Topic" :to="{ name: 'List Topic' }">
+          <template v-slot:icon>
             <icon name="customer-support" />
-          </template>
-        </sidenav-collapse>
-      </li>
-      <li class="nav-item">
-        <sidenav-collapse navText="Sign In" :to="{ name: 'Sign In' }">
-          <template v-slot:icon>
-            <icon name="sign-in" />
-          </template>
-        </sidenav-collapse>
-      </li>
-      <li class="nav-item">
-        <sidenav-collapse navText="Sign Up" :to="{ name: 'Sign Up' }">
-          <template v-slot:icon>
-            <icon name="sign-up" />
           </template>
         </sidenav-collapse>
       </li>
