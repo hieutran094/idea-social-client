@@ -7,6 +7,9 @@ import VsudCheckbox from '@/components/VsudCheckbox.vue'
 import VsudModal from '@/components/VsudModal.vue'
 import VsudPagination from '@/components/VsudPagination.vue'
 import VsudPaginationItem from '@/components/VsudPaginationItem.vue'
+import VsudDatePicker from '@/components/VsudDatePicker.vue'
+import TextEditor from '@/components/TextEditor.vue'
+
 export default {
   install(app) {
     app.component(VsudInput.name, VsudInput)
@@ -18,5 +21,7 @@ export default {
     app.component(VsudModal.name, VsudModal)
     app.component(VsudPagination.name, VsudPagination)
     app.component(VsudPaginationItem.name, VsudPaginationItem)
+    app.component(TextEditor.name, TextEditor)
+    app.component(VsudDatePicker.name, VsudDatePicker)
   },
 }

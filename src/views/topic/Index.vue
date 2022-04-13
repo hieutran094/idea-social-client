@@ -47,7 +47,7 @@
                     <td>
                       <div class="d-flex px-2 py-1">
                         <div class="d-flex flex-column justify-content-center">
-                          <h6 class="mx-2 mb-0 text-sm">{{ item.description }}</h6>
+                          <h6 class="mx-2 mb-0 text-sm text-truncate" style="max-width: 150px">{{ removeTags(item.description) }}</h6>
                         </div>
                       </div>
                     </td>
@@ -66,7 +66,7 @@
                       </div>
                     </td>
                     <td class="align-middle text-center">
-                      <router-link :to="`/department/edit/${item.id}`"
+                      <router-link :to="`/topic/edit/${item.id}`"
                         ><vsud-button color="secondary" variant="outline" class="mb-auto py-2"
                           ><i class="fa fa-pencil"></i> Edit</vsud-button
                         ></router-link
@@ -110,7 +110,7 @@ import moment from 'moment-timezone'
 import TopicService from '@/services/TopicService.js'
 moment().tz('Asia/Ho_Chi_Minh').format()
 export default defineComponent({
-  name: 'ListDepartment',
+  name: 'ListTopic',
   components: {},
   data() {
     return { topics: [], lastPage: 1, isOpenModal: false, currentData: { id: '', name: '' }, keyword: null }
@@ -180,6 +180,14 @@ export default defineComponent({
       } finally {
         this.$store.dispatch('stopLoading')
       }
+    },
+    removeTags(string) {
+      return !string
+        ? ''
+        : string
+            .replace(/<[^>]*>/g, ' ')
+            .replace(/\s{2,}/g, ' ')
+            .trim()
     },
   },
 })

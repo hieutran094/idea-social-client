@@ -1,13 +1,13 @@
 <template>
   <div class="py-4 container-fluid">
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-5">
         <div class="card mb-4 border border-3 border-secondary border-bottom-0 border-start-0 border-end-0 rounded-1">
           <div class="card-header pb-0">
-            <h6>{{ currentData.name }}</h6>
+            <h6>{{ currentData.name }} topic</h6>
           </div>
           <div class="card-body border-top">
-            <validate-form class="text-start" @submit="onSubmit" v-slot="{ meta }">
+            <validate-form class="text-start" @submit="onSubmit" v-slot="{ meta }" validateOnMount>
               <div class="d-none">{{ (isValid = meta.valid) }}</div>
               <div class="row gx-0 align-items-center justify-content-between">
                 <div class="col-sm-2 mb-sm-3">
@@ -17,11 +17,23 @@
                   class="col-sm-9"
                   type="text"
                   name="name"
-                  :value="currentData.name"
                   placeholder="Name"
                   aria-label="Name"
                   rules="required"
+                  v-model:value="currentData.name"
                 />
+              </div>
+              <div class="row gx-0 align-items-center justify-content-between">
+                <div class="col-sm-2 mb-sm-3">
+                  <label class="float-sm-end">Lock Date <span class="text-danger">*</span></label>
+                </div>
+                <vsud-date-picker class="col-sm-9" name="lock_date" rules="required" utc v-model:value="currentData.lock_date" />
+              </div>
+              <div class="row gx-0 align-items-center justify-content-between">
+                <div class="col-sm-2 mb-sm-3">
+                  <label class="float-sm-end">Close Date <span class="text-danger">*</span></label>
+                </div>
+                <vsud-date-picker class="col-sm-9" name="close_date" rules="required" utc v-model:value="currentData.close_date" />
               </div>
               <button type="submit" class="d-none"></button>
             </validate-form>
@@ -33,35 +45,42 @@
           </div>
         </div>
       </div>
+      <div class="col-md-7">
+        <div class="card mb-4 border border-3 border-secondary border-bottom-0 border-start-0 border-end-0 rounded-1 card-editor">
+          <div class="card-header pb-0">
+            <h6>Description</h6>
+          </div>
+          <div class="card-body border-top">
+            <text-editor v-model:content="currentData.description" />
+          </div>
+          <div class="card-footer border-top pt-2 pb-2 d-flex justify-content-end"></div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
-import DepartmentService from '@/services/DepartmentService.js'
+import TopicService from '@/services/TopicService.js'
 export default defineComponent({
-  name: 'CreateDepartment',
+  name: 'CreateTopic',
   components: {},
   data() {
-    return {
-      isValid: true,
-      currentData: {
-        name: '',
-      },
-    }
+    return { isValid: true, currentData: { name: '', lock_date: null, close_date: null, description: null } }
   },
   computed: {
-    departmentId() {
+    dataId() {
       return this.$route.params.id
     },
   },
   async mounted() {
     this.$store.dispatch('startLoading')
     try {
-      const res = await DepartmentService.getOne(this.$axios, this.departmentId)
+      const res = await TopicService.getOne(this.$axios, this.dataId)
       if (res.success) {
         this.currentData = res.data
+        console.log(this.currentData)
       }
     } catch (err) {
       this.$store.dispatch('handleNotifications', { message: err.response.message })
@@ -73,11 +92,13 @@ export default defineComponent({
     onClick() {
       document.querySelectorAll('button[type=submit]')[0].click()
     },
-    async onSubmit(formData) {
+    async onSubmit() {
       this.$store.dispatch('startLoading')
       try {
-        const res = await DepartmentService.updateOne(this.$axios, this.departmentId, formData)
-        if (res.success) this.$router.push('/department')
+        const res = await TopicService.updateOne(this.$axios, this.dataId, this.currentData)
+        if (res.success) {
+          this.$router.push('/topic')
+        }
         this.$store.dispatch('handleNotifications', res)
       } catch (err) {
         this.$store.dispatch('handleNotifications', { message: err.response.data })
