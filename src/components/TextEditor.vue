@@ -1,5 +1,13 @@
 <template>
-  <QuillEditor theme="snow" :toolbar="toolbarOptions" class="rounded-bottom" />
+  <QuillEditor
+    ref="editor"
+    theme="snow"
+    :toolbar="toolbarOptions"
+    :placeholder="placeholder"
+    v-model:content="value"
+    contentType="html"
+    class="rounded-bottom"
+  ></QuillEditor>
 </template>
 
 <script>
@@ -11,11 +19,16 @@ export default {
     QuillEditor,
   },
   props: {
-    color: {
+    content: {
       type: String,
-      default: 'success',
+      default: null,
+    },
+    placeholder: {
+      type: String,
+      default: 'Type here...',
     },
   },
+  emits: ['update:content'],
   data() {
     const toolbarOptions = [
       [{ header: [1, 2, 3, 4, 5, false] }],
@@ -28,6 +41,19 @@ export default {
     ]
     return { toolbarOptions }
   },
-  methods: {},
+  computed: {
+    value: {
+      get() {
+        if (this.$refs.editor) {
+          this.$refs.editor.setHTML(this.content)
+        }
+        return this.content
+      },
+      set(newValue) {
+        this.copy = newValue
+        this.$emit('update:content', newValue)
+      },
+    },
+  },
 }
 </script>
