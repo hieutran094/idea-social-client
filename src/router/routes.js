@@ -5,7 +5,7 @@ import VirtualReality from '@/views/VirtualReality.vue'
 import Profile from '@/views/Profile.vue'
 import SignIn from '@/views/SignIn.vue'
 import SignUp from '@/views/SignUp.vue'
-import EditPage from '@/views/Edit.vue'
+import Newsfeed from '@/views/Newsfeed.vue'
 import ListDepartment from '@/views/department/Index.vue'
 import CreateDepartment from '@/views/department/Create.vue'
 import EditDepartment from '@/views/department/Edit.vue'
@@ -76,6 +76,14 @@ export default [
     },
   },
   {
+    path: '/newsfeed',
+    name: 'Newsfeed',
+    component: Newsfeed,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
     path: '/tables',
     name: 'Tables',
     component: Tables,
@@ -104,10 +112,5 @@ export default [
     path: '/sign-up',
     name: 'Sign Up',
     component: SignUp,
-  },
-  {
-    path: '/edit',
-    name: 'Edit',
-    component: EditPage,
   },
 ]

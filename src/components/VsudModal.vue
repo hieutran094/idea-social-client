@@ -1,6 +1,6 @@
 <template>
   <div ref="modal" class="modal fade custom-modal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog" :class="classes">
       <div class="modal-content">
         <div class="modal-header">
           <slot name="header"></slot>
@@ -23,6 +23,9 @@ export default {
     isOpen: {
       type: Boolean,
       default: false,
+    },
+    classes: {
+      type: String,
     },
   },
   data() {
