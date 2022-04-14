@@ -1,6 +1,13 @@
 <template>
   <div class="w-auto h-auto collapse navbar-collapse max-height-vh-100 h-100" id="sidenav-collapse-main">
     <ul class="navbar-nav">
+       <li class="nav-item">
+        <sidenav-collapse navText="Newsfeed" :to="{ name: 'Newsfeed' }">
+          <template v-slot:icon>
+            <i class="fa fa-newspaper-o"></i>
+          </template>
+        </sidenav-collapse>
+      </li>
       <li class="nav-item">
         <sidenav-collapse navText="Dashboard" :to="{ name: 'Dashboard' }">
           <template v-slot:icon>
