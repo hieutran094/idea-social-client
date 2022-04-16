@@ -7,7 +7,7 @@
       </a>
     </div>
     <div class="px-1 pb-0 card-body">
-      <span v-if="!item.lock" class="badge bg-success">Open</span>
+      <span v-if="!item.lock" class="badge bg-success"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Open</span>
       <span v-else class="badge bg-danger"><i class="fa fa-lock" aria-hidden="true"></i> Lock</span>
       <a href="javascript:;">
         <h5>{{ item.name }}</h5>
