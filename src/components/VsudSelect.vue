@@ -17,7 +17,7 @@
         @change="handleChange"
       >
         <option value="" disabled>Select a one</option>
-        <option v-for="item in values" :key="item.id" :value="item.id" :selected="item.id === value">
+        <option v-for="item in values" :key="item.id" :value="item.id" :selected="item.id === value" :disabled="item.disabled">
           {{ item.name }}
         </option></validate-field
       >
