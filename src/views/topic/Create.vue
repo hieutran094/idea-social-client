@@ -11,7 +11,7 @@
               <div class="d-none">{{ (isValid = meta.valid) }}</div>
               <div class="row gx-0 align-items-center justify-content-between">
                 <div class="col-sm-2 mb-sm-3">
-                  <label class="float-sm-end">Name <span class="text-danger">*</span></label>
+                  <label class="float-sm-start">Name <span class="text-danger">*</span></label>
                 </div>
                 <vsud-input
                   class="col-sm-9"
@@ -25,15 +25,21 @@
               </div>
               <div class="row gx-0 align-items-center justify-content-between">
                 <div class="col-sm-2 mb-sm-3">
-                  <label class="float-sm-end">Lock Date <span class="text-danger">*</span></label>
+                  <label class="float-sm-start">Lock Date <span class="text-danger">*</span></label>
                 </div>
                 <vsud-date-picker class="col-sm-9" name="lock_date" rules="required" utc v-model:value="topic.lock_date" />
               </div>
               <div class="row gx-0 align-items-center justify-content-between">
                 <div class="col-sm-2 mb-sm-3">
-                  <label class="float-sm-end">Close Date <span class="text-danger">*</span></label>
+                  <label class="float-sm-start">Close Date <span class="text-danger">*</span></label>
                 </div>
                 <vsud-date-picker class="col-sm-9" name="close_date" rules="required" utc v-model:value="topic.close_date" />
+              </div>
+              <div class="row gx-0 align-items-center justify-content-between">
+                <div class="col-sm-2 mb-sm-3">
+                  <label class="float-sm-start">Photo</label>
+                </div>
+                <vsud-file class="col-sm-9" name="image_id" aria-label="Image" rules="image" />
               </div>
               <button type="submit" class="d-none"></button>
             </validate-form>
@@ -63,20 +69,23 @@
 <script>
 import { defineComponent } from 'vue'
 import TopicService from '@/services/TopicService.js'
+import { serialize } from 'object-to-formdata'
 export default defineComponent({
   name: 'CreateTopic',
   components: {},
   data() {
-    return { isValid: true, topic: { name: '', lock_date: null, close_date: null, description: null } }
+    return { isValid: true, topic: { name: '', lock_date: null, close_date: null, description: null, image_id: null } }
   },
   methods: {
     onClick() {
       document.querySelectorAll('button[type=submit]')[0].click()
     },
-    async onSubmit() {
+    async onSubmit(data) {
       this.$store.dispatch('startLoading')
       try {
-        const res = await TopicService.createOne(this.$axios, this.topic)
+        const { image_id } = data
+        const formData = serialize({ ...this.topic, image_id })
+        const res = await TopicService.createOne(this.$axios, formData)
         if (res.success) {
           this.$router.push('/topic')
         }
