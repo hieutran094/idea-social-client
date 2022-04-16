@@ -17,7 +17,7 @@ export default [
   {
     path: '/',
     name: '/',
-    redirect: '/dashboard',
+    redirect: '/newsfeed',
   },
   {
     path: '/dashboard',

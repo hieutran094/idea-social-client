@@ -9,7 +9,8 @@ import VsudPagination from '@/components/VsudPagination.vue'
 import VsudPaginationItem from '@/components/VsudPaginationItem.vue'
 import VsudDatePicker from '@/components/VsudDatePicker.vue'
 import TextEditor from '@/components/TextEditor.vue'
-
+import VsudFile from '@/components/VsudFile.vue'
+import VsudSelect from '@/components/VsudSelect.vue'
 export default {
   install(app) {
     app.component(VsudInput.name, VsudInput)
@@ -23,5 +24,7 @@ export default {
     app.component(VsudPaginationItem.name, VsudPaginationItem)
     app.component(TextEditor.name, TextEditor)
     app.component(VsudDatePicker.name, VsudDatePicker)
+    app.component(VsudFile.name, VsudFile)
+    app.component(VsudSelect.name, VsudSelect)
   },
 }
