@@ -44,7 +44,7 @@
                   rules="confirmed:@password"
                 />
               </div>
-              <vsud-checkbox v-model:checked="isAgree">
+              <vsud-checkbox v-model:checked="isAgree" name="agreee">
                 I agree the
                 <a href="javascript:;" class="text-dark font-weight-bolder">Terms and Conditions</a>
               </vsud-checkbox>
@@ -68,7 +68,6 @@
 <script>
 import AppFooter from '@/examples/PageLayout/Footer.vue'
 import VsudInput from '@/components/VsudInput.vue'
-import VsudCheckbox from '@/components/VsudCheckbox.vue'
 import VsudButton from '@/components/VsudButton.vue'
 import AuthService from '../services/AuthService'
 export default {
@@ -76,7 +75,6 @@ export default {
   components: {
     AppFooter,
     VsudInput,
-    VsudCheckbox,
     VsudButton,
   },
   data() {

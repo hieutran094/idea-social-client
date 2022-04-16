@@ -1,22 +1,30 @@
 <template>
-  <QuillEditor
-    ref="editor"
-    theme="snow"
-    :toolbar="toolbarOptions"
-    :placeholder="placeholder"
-    v-model:content="value"
-    contentType="html"
-    class="rounded-bottom"
-  ></QuillEditor>
+  <validate-field v-slot="{ handleChange, handleBlur }" :name="name" :rules="rules">
+    <QuillEditor
+      ref="editor"
+      theme="snow"
+      :toolbar="toolbarOptions"
+      :placeholder="placeholder"
+      v-model:content="value"
+      contentType="html"
+      class="rounded-bottom"
+      @update:content="handleChange"
+      @blur="handleBlur"
+    ></QuillEditor>
+  </validate-field>
+  <error-message class="text-danger text-sm" :name="name" />
 </template>
 
 <script>
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
+import { Field, ErrorMessage } from 'vee-validate'
 export default {
   name: 'text-editor',
   components: {
     QuillEditor,
+    'validate-field': Field,
+    'error-message': ErrorMessage,
   },
   props: {
     content: {
@@ -27,6 +35,8 @@ export default {
       type: String,
       default: 'Type here...',
     },
+    name: String,
+    rules: String,
   },
   emits: ['update:content'],
   data() {

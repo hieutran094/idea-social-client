@@ -5,7 +5,7 @@
         <div class="card card-block card-stretch card-height mb-3">
           <div class="card-header d-flex justify-content-between">
             <div class="header-title">
-              <h4 class="card-title">Create Idea</h4>
+              <h4 class="card-title">Post your idea</h4>
             </div>
           </div>
           <div class="card-body">
@@ -75,10 +75,8 @@
               </div>
             </div>
             <div class="mt-3">
-              <h5 class="mb-0 d-inline-block">Anna Sthesia</h5>
-              <p>
-                {{ idea.description }}
-              </p>
+              <h5 class="mb-0 d-inline-block">{{ idea.title }}</h5>
+              <span class="mt-2 d-block" v-html="idea.description"></span>
             </div>
             <div class="user-post" v-if="idea.image">
               <div class="d-grid grid-rows-2 grid-flow-col gap-3">
@@ -154,7 +152,12 @@
           </div>
           <div class="card-body">
             <ul class="media-story list-inline m-0 p-0">
-              <li class="d-flex mb-3 align-items-center active" v-for="topic in topics" :key="topic.id">
+              <li
+                class="d-flex mb-3 align-items-center active cursor-pointer"
+                v-for="topic in topics"
+                :key="topic.id"
+                @click="searchByTopic(topic.id)"
+              >
                 <img src="../assets/images/page-img/s2.jpg" alt="story-img" class="rounded img-fluid" />
                 <div class="stories-data ms-3">
                   <h5>{{ topic.name }}</h5>
@@ -172,31 +175,25 @@
             </div>
           </div>
           <div class="card-body">
-            <ul class="suggested-page-story m-0 p-0 list-inline">
+            <ul class="suggested-page-story m-0 p-0 list-inline" v-for="idea in suggests" :key="idea.id">
               <li class="mb-3">
                 <div class="d-flex align-items-center mb-3">
                   <img src="../assets/images/page-img/42.png" alt="story-img" class="rounded-circle img-fluid w-10" />
                   <div class="stories-data ms-3">
-                    <h5>Iqonic Studio</h5>
-                    <p class="mb-0">Lorem Ipsum</p>
+                    <h5>{{ idea.is_incognito ? 'Anonymous' : idea.author?.user_name }}</h5>
+                    <p class="mb-0">{{ idea.title }}</p>
                   </div>
                 </div>
-                <img src="../assets/images/small/img-1.jpg" class="img-fluid rounded" alt="Responsive image" />
+                <img
+                  v-if="idea.image"
+                  :src="idea?.image ? idea?.image?.source_url : '../assets/images/small/img-2.jpg'"
+                  class="img-fluid rounded"
+                  alt="Responsive image"
+                />
+                <img v-else src="../assets/images/page-img/empty.png" class="img-fluid rounded" alt="Responsive image" />
+
                 <div class="mt-3">
-                  <a href="#" class="btn d-block"><i class="ri-thumb-up-line me-2"></i> Like Page</a>
-                </div>
-              </li>
-              <li class="">
-                <div class="d-flex align-items-center mb-3">
-                  <img src="../assets/images/page-img/42.png" alt="story-img" class="rounded-circle img-fluid w-10" />
-                  <div class="stories-data ms-3">
-                    <h5>Cakes & Bakes</h5>
-                    <p class="mb-0">Lorem Ipsum</p>
-                  </div>
-                </div>
-                <img src="../assets/images/small/img-2.jpg" class="img-fluid rounded" alt="Responsive image" />
-                <div class="mt-3">
-                  <a href="#" class="btn d-block"><i class="ri-thumb-up-line me-2"></i> Like Page</a>
+                  <a href="#" class="btn d-block"><i class="ri-thumb-up-line me-2"></i> Read More</a>
                 </div>
               </li>
             </ul>
@@ -205,119 +202,8 @@
       </div>
     </div>
     <vsud-modal :isOpen="isOpenModal" @close="isOpenModal = false" classes="modal-dialog modal-lg">
-      <template v-slot:header><h5 class="modal-title" id="post-modalLabel">Create Post</h5></template>
-      <div class="d-flex align-items-center">
-        <div class="user-img">
-          <img src="../assets/images/user/1.jpg" alt="userimg" class="avatar-60 rounded-circle img-fluid" />
-        </div>
-        <form class="post-text ms-3 w-100" action="javascript:void();">
-          <input type="text" class="form-control rounded" placeholder="Write something here..." style="border: none" />
-        </form>
-      </div>
-      <hr />
-      <ul class="d-flex flex-wrap align-items-center list-inline m-0 p-0">
-        <li class="col-md-6 mb-3">
-          <div class="bg-soft-primary rounded p-2 pointer me-3">
-            <a href="#"></a><img src="../assets/images/small/07.png" alt="icon" class="img-fluid" /> Photo/Video
-          </div>
-        </li>
-        <li class="col-md-6 mb-3">
-          <div class="bg-soft-primary rounded p-2 pointer me-3">
-            <a href="#"></a><img src="../assets/images/small/08.png" alt="icon" class="img-fluid" /> Tag Friend
-          </div>
-        </li>
-        <li class="col-md-6 mb-3">
-          <div class="bg-soft-primary rounded p-2 pointer me-3">
-            <a href="#"></a><img src="../assets/images/small/09.png" alt="icon" class="img-fluid" /> Feeling/Activity
-          </div>
-        </li>
-        <li class="col-md-6 mb-3">
-          <div class="bg-soft-primary rounded p-2 pointer me-3">
-            <a href="#"></a><img src="../assets/images/small/10.png" alt="icon" class="img-fluid" /> Check in
-          </div>
-        </li>
-        <li class="col-md-6 mb-3">
-          <div class="bg-soft-primary rounded p-2 pointer me-3">
-            <a href="#"></a><img src="../assets/images/small/11.png" alt="icon" class="img-fluid" /> Live Video
-          </div>
-        </li>
-        <li class="col-md-6 mb-3">
-          <div class="bg-soft-primary rounded p-2 pointer me-3">
-            <a href="#"></a><img src="../assets/images/small/12.png" alt="icon" class="img-fluid" /> Gif
-          </div>
-        </li>
-        <li class="col-md-6 mb-3">
-          <div class="bg-soft-primary rounded p-2 pointer me-3">
-            <a href="#"></a><img src="../assets/images/small/13.png" alt="icon" class="img-fluid" /> Watch Party
-          </div>
-        </li>
-        <li class="col-md-6 mb-3">
-          <div class="bg-soft-primary rounded p-2 pointer me-3">
-            <a href="#"></a><img src="../assets/images/small/14.png" alt="icon" class="img-fluid" /> Play with Friends
-          </div>
-        </li>
-      </ul>
-      <hr />
-      <div class="other-option">
-        <div class="d-flex align-items-center justify-content-between">
-          <div class="d-flex align-items-center">
-            <div class="user-img me-3">
-              <img src="../assets/images/user/1.jpg" alt="userimg" class="avatar-60 rounded-circle img-fluid" />
-            </div>
-            <h6>Your Story</h6>
-          </div>
-          <div class="card-post-toolbar">
-            <div class="dropdown">
-              <span class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                <span class="btn btn-primary">Friend</span>
-              </span>
-              <div class="dropdown-menu m-0 p-0">
-                <a class="dropdown-item p-3" href="#">
-                  <div class="d-flex align-items-top">
-                    <i class="ri-save-line h4"></i>
-                    <div class="data ms-2">
-                      <h6>Public</h6>
-                      <p class="mb-0">Anyone on or off Facebook</p>
-                    </div>
-                  </div>
-                </a>
-                <a class="dropdown-item p-3" href="#">
-                  <div class="d-flex align-items-top">
-                    <i class="ri-close-circle-line h4"></i>
-                    <div class="data ms-2">
-                      <h6>Friends</h6>
-                      <p class="mb-0">Your Friend on facebook</p>
-                    </div>
-                  </div>
-                </a>
-                <a class="dropdown-item p-3" href="#">
-                  <div class="d-flex align-items-top">
-                    <i class="ri-user-unfollow-line h4"></i>
-                    <div class="data ms-2">
-                      <h6>Friends except</h6>
-                      <p class="mb-0">Don't show to some friends</p>
-                    </div>
-                  </div>
-                </a>
-                <a class="dropdown-item p-3" href="#">
-                  <div class="d-flex align-items-top">
-                    <i class="ri-notification-line h4"></i>
-                    <div class="data ms-2">
-                      <h6>Only Me</h6>
-                      <p class="mb-0">Only me</p>
-                    </div>
-                  </div>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <button type="submit" class="btn btn-primary d-block w-100 mt-3">Post</button>
-      <template v-slot:footer>
-        <vsud-button color="light" data-bs-dismiss="modal">Close</vsud-button>
-        <vsud-button color="dark">Save</vsud-button></template
-      >
+      <template v-slot:header><h5 class="modal-title" id="post-modalLabel">Post new idea</h5></template>
+      <idea-form @close="onCloseIdeaForm"></idea-form>
     </vsud-modal>
   </div>
 </template>
@@ -328,16 +214,18 @@ import moment from 'moment-timezone'
 import IdeaService from '@/services/IdeaService.js'
 import TopicService from '@/services/TopicService.js'
 import CommentService from '@/services/CommentService.js'
+import IdeaForm from './components/IdeaForm.vue'
 moment().tz('Asia/Ho_Chi_Minh').format()
 export default defineComponent({
   name: 'edit',
-  components: {},
+  components: { IdeaForm },
   data() {
-    return { isValid: true, isOpenModal: false, page: 1, nextPage: null, lastPage: 0, ideas: [], topics: [] }
+    return { isValid: true, isOpenModal: false, page: 1, nextPage: null, lastPage: 0, ideas: [], topics: [], suggests: [], test: '' }
   },
   async mounted() {
     this.$store.dispatch('setPage', this.page)
     await this.search()
+    await this.searchRandom()
     const { success, data } = await TopicService.search(this.$axios, this.$store, null)
     if (success) this.topics = data.data
   },
@@ -347,13 +235,31 @@ export default defineComponent({
       this.$store.dispatch('setPage', number)
       await this.search()
     },
-    async search(keyword = null) {
+    async searchByTopic(topicId) {
+      this.$store.dispatch('setPage', 1)
+      await this.search({ topicId }, true)
+    },
+    async searchRandom() {
       this.$store.dispatch('startLoading')
       try {
-        const res = await IdeaService.search(this.$axios, this.$store, keyword)
+        const res = await IdeaService.search(this.$axios, this.$store, { rand: true })
+        if (res.success) {
+          const { data } = res.data
+          this.suggests = data
+        } else throw res
+      } catch (err) {
+        this.$store.dispatch('handleNotifications', { message: typeof err === 'string' ? err : err.message })
+      } finally {
+        this.$store.dispatch('stopLoading')
+      }
+    },
+    async search(param = {}, forceUpdate = false) {
+      this.$store.dispatch('startLoading')
+      try {
+        const res = await IdeaService.search(this.$axios, this.$store, param)
         if (res.success) {
           const { data, page, nextPage, lastPage } = res.data
-          this.ideas = this.ideas.concat(data)
+          this.ideas = forceUpdate ? data : this.ideas.concat(data)
           this.page = page
           this.nextPage = nextPage
           this.lastPage = lastPage
@@ -365,16 +271,13 @@ export default defineComponent({
       }
     },
     async postComment(formData, id) {
-      console.log(formData)
       this.$store.dispatch('startLoading')
       try {
         const res = await CommentService.createOne(this.$axios, { ...formData, idea_id: id })
         if (res.success) {
-          // const { data, page, nextPage, lastPage } = res.data
-          // this.ideas = this.ideas.concat(data)
-          // this.page = page
-          // this.nextPage = nextPage
-          // this.lastPage = lastPage
+          const index = this.ideas.findIndex((idea) => idea.id === res.data.idea.id)
+          this.ideas[index].comments.unshift(res.data)
+          this.ideas[index].commentCount++
         } else throw res
       } catch (err) {
         this.$store.dispatch('handleNotifications', { message: typeof err === 'string' ? err : err.message })
@@ -387,7 +290,8 @@ export default defineComponent({
         const res = await IdeaService.upVote(this.$axios, id)
         if (res.success) {
           const index = this.ideas.findIndex((idea) => idea.id === res.data.id)
-          this.ideas[index] = res.data
+          const { upVoteCount, downVoteCount } = res.data
+          this.ideas[index] = { ...this.ideas[index], ...{ upVoteCount, downVoteCount } }
         } else throw res
       } catch (err) {
         this.$store.dispatch('handleNotifications', { message: typeof err === 'string' ? err : err.message })
@@ -398,7 +302,8 @@ export default defineComponent({
         const res = await IdeaService.downVote(this.$axios, id)
         if (res.success) {
           const index = this.ideas.findIndex((idea) => idea.id === res.data.id)
-          this.ideas[index] = res.data
+          const { upVoteCount, downVoteCount } = res.data
+          this.ideas[index] = { ...this.ideas[index], ...{ upVoteCount, downVoteCount } }
         } else throw res
       } catch (err) {
         this.$store.dispatch('handleNotifications', { message: typeof err === 'string' ? err : err.message })
@@ -409,6 +314,13 @@ export default defineComponent({
     },
     convertTime(time) {
       return moment(time).format('DD/MM/YYYY, HH:mm')
+    },
+    async onCloseIdeaForm(isReload = false) {
+      if (isReload) {
+        this.$store.dispatch('setPage', 1)
+        await this.search({}, true)
+      }
+      this.isOpenModal = false
     },
   },
 })

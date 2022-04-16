@@ -12,6 +12,13 @@ export default {
       }
       return true
     })
+    defineRule('document', (value) => {
+      const re = /(\.xlsx|\.xls|\.doc|\.docx|\.ppt|\.pptx|\.txt|\.pdf)$/i
+      if (!re.exec(value.name)) {
+        return 'document is not valid.'
+      }
+      return true
+    })
     app.component('validate-form', Form)
   },
 }

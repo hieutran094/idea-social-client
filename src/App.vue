@@ -76,3 +76,11 @@ export default {
   },
 }
 </script>
+<style scoped>
+.vld-overlay.is-full-page {
+  z-index: 10015 !important;
+}
+.vue-notification-group {
+  z-index: 10010;
+}
+</style>

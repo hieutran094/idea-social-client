@@ -1,10 +1,10 @@
 <template>
   <div class="w-auto h-auto collapse navbar-collapse max-height-vh-100 h-100" id="sidenav-collapse-main">
     <ul class="navbar-nav">
-       <li class="nav-item">
+      <li class="nav-item">
         <sidenav-collapse navText="Newsfeed" :to="{ name: 'Newsfeed' }">
           <template v-slot:icon>
-            <i class="fa fa-newspaper-o"></i>
+            <icon name="foundation" />
           </template>
         </sidenav-collapse>
       </li>
