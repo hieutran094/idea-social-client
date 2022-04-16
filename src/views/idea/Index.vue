@@ -5,11 +5,6 @@
         <div class="card mb-4 border border-3 border-secondary border-bottom-0 border-start-0 border-end-0 rounded-1">
           <div class="card-header pb-0">
             <div class="btn-toolbar d-flex align-items-start justify-content-between" role="toolbar">
-              <div class="btn-group mb-3" role="group">
-                <router-link to="/topic/create">
-                  <vsud-button color="secondary" class="mb-auto"><i class="fa fa-plus"></i> Add</vsud-button></router-link
-                >
-              </div>
               <div class="input-group">
                 <vsud-input
                   type="text"
@@ -28,10 +23,11 @@
               <table class="table align-items-center mb-0">
                 <thead>
                   <tr>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Title</th>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Description</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Lock Date</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Close Date</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Like</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Unlike</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Comment</th>
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
                   </tr>
                 </thead>
@@ -40,7 +36,7 @@
                     <td>
                       <div class="d-flex px-2 py-1">
                         <div class="d-flex flex-column justify-content-center">
-                          <h6 class="mx-2 mb-0 text-sm">{{ item.name }}</h6>
+                          <h6 class="mx-2 mb-0 text-sm">{{ item.title }}</h6>
                         </div>
                       </div>
                     </td>
@@ -54,28 +50,32 @@
                     <td>
                       <div class="d-flex px-2 py-1">
                         <div class="d-flex flex-column justify-content-center">
-                          <h6 class="mx-2 mb-0 text-sm">{{ convertTime(item.lock_date) }}</h6>
+                          <h6 class="mx-2 mb-0 text-sm">
+                            <span class="badge bg-success">{{ item.upVoteCount }}</span>
+                          </h6>
                         </div>
                       </div>
                     </td>
                     <td>
                       <div class="d-flex px-2 py-1">
                         <div class="d-flex flex-column justify-content-center">
-                          <h6 class="mx-2 mb-0 text-sm">{{ convertTime(item.close_date) }}</h6>
+                          <h6 class="mx-2 mb-0 text-sm">
+                            <span class="badge bg-primary">{{ item.downVoteCount }}</span>
+                          </h6>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex px-2 py-1">
+                        <div class="d-flex flex-column justify-content-center">
+                          <h6 class="mx-2 mb-0 text-sm">
+                            <span class="badge bg-info text-dark">{{ item.commentCount }}</span>
+                          </h6>
                         </div>
                       </div>
                     </td>
                     <td class="align-middle text-center">
-                      <router-link :to="`/topic/${item.id}/ideas`"
-                        ><vsud-button color="secondary" variant="outline" class="mb-auto py-2"
-                          ><i class="fa fa-eye"></i> Ideas</vsud-button
-                        ></router-link
-                      >
-                      <router-link :to="`/topic/edit/${item.id}`"
-                        ><vsud-button color="secondary" variant="outline" class="mb-auto py-2 mx-2"
-                          ><i class="fa fa-pencil"></i> Edit</vsud-button
-                        ></router-link
-                      ><vsud-button color="secondary" variant="outline" class="mb-auto py-2" @click="onDelete(item)"
+                      <vsud-button color="secondary" variant="outline" class="mb-auto py-2 mx-2" @click="onDelete(item)"
                         ><i class="fa fa-trash"></i> Delete</vsud-button
                       >
                     </td>
@@ -112,7 +112,7 @@
 <script>
 import { defineComponent } from 'vue'
 import moment from 'moment-timezone'
-import TopicService from '@/services/TopicService.js'
+import IdeaService from '@/services/IdeaService.js'
 moment().tz('Asia/Ho_Chi_Minh').format()
 export default defineComponent({
   name: 'ListTopic',
@@ -121,7 +121,7 @@ export default defineComponent({
     return { topics: [], lastPage: 1, isOpenModal: false, currentData: { id: '', name: '' }, keyword: null }
   },
   async mounted() {
-    await this.search()
+    await this.search({ topicId: this.topicId })
   },
   computed: {
     currentPage() {
@@ -129,6 +129,9 @@ export default defineComponent({
     },
     paginationItems() {
       return this.paginate(this.currentPage, this.lastPage, 1)
+    },
+    topicId() {
+      return this.$route.params.id
     },
   },
   methods: {
@@ -150,12 +153,12 @@ export default defineComponent({
     async changePage(number) {
       if (number <= 0 || number > this.lastPage) return
       this.$store.dispatch('setPage', number)
-      await this.search()
+      await this.search({ topicId: this.topicId })
     },
-    async search(keyword = null) {
+    async search(param) {
       this.$store.dispatch('startLoading')
       try {
-        const res = await TopicService.search(this.$axios, this.$store, keyword)
+        const res = await IdeaService.search(this.$axios, this.$store, param)
         if (res.success) {
           const { data, lastPage } = res.data
           this.topics = data
@@ -174,7 +177,7 @@ export default defineComponent({
     async submitDelete() {
       this.$store.dispatch('startLoading')
       try {
-        const res = await TopicService.deleteOne(this.$axios, this.currentData.id)
+        const res = await IdeaService.deleteOne(this.$axios, this.currentData.id)
         if (res.success) {
           await this.search()
         }
