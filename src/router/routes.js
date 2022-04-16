@@ -14,7 +14,7 @@ import EditDepartment from '@/views/department/Edit.vue'
 import ListTopic from '@/views/topic/Index.vue'
 import CreateTopic from '@/views/topic/Create.vue'
 import EditTopic from '@/views/topic/Edit.vue'
-
+import ListIdea from '@/views/idea/Index.vue'
 export default [
   {
     path: '/',
@@ -89,6 +89,14 @@ export default [
     path: '/topic/create',
     name: 'Create Topic',
     component: CreateTopic,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/topic/:id/ideas',
+    name: 'List Idea',
+    component: ListIdea,
     meta: {
       requiresAuth: true,
     },
