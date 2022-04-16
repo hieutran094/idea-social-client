@@ -6,6 +6,8 @@ import Profile from '@/views/Profile.vue'
 import SignIn from '@/views/SignIn.vue'
 import SignUp from '@/views/SignUp.vue'
 import Newsfeed from '@/views/Newsfeed.vue'
+import Topics from '@/views/Topics.vue'
+import TopicDetail from '@/views/TopicDetail.vue'
 import ListDepartment from '@/views/department/Index.vue'
 import CreateDepartment from '@/views/department/Create.vue'
 import EditDepartment from '@/views/department/Edit.vue'
@@ -18,6 +20,22 @@ export default [
     path: '/',
     name: '/',
     redirect: '/newsfeed',
+  },
+  {
+    path: '/topics',
+    name: 'Topics',
+    component: Topics,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/topics/detail/:id',
+    name: 'Topic Detail',
+    component: TopicDetail,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: '/dashboard',

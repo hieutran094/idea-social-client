@@ -2,20 +2,20 @@
   <div class="card card-blog card-plain">
     <div class="position-relative">
       <a class="shadow-xl d-block border-radius-xl">
-        <img :src="img" alt="img-blur-shadow" class="shadow img-fluid border-radius-xl" />
+        <img v-if="item.image" :src="item?.image?.source_url" class="shadow img-fluid border-radius-xl" alt="Responsive image" />
+        <img v-else src="../../assets/images/page-img/empty.png" class="shadow img-fluid border-radius-xl" alt="Responsive image" />
       </a>
     </div>
     <div class="px-1 pb-0 card-body">
-      <p class="mb-2 text-sm text-gradient text-dark">Project #{{ number }}</p>
+      <span v-if="!item.lock" class="badge bg-success">Open</span>
+      <span v-else class="badge bg-danger"><i class="fa fa-lock" aria-hidden="true"></i> Lock</span>
       <a href="javascript:;">
-        <h5>{{ title }}</h5>
+        <h5>{{ item.name }}</h5>
       </a>
-      <p class="mb-4 text-sm">
-        {{ description }}
-      </p>
+      <span class="mb-4 d-block" style="max-height: 150px; overflow: hidden">{{ removeTags(item.description) }} </span>
       <div class="d-flex align-items-center justify-content-between">
-        <button type="button" class="mb-0 btn btn-outline-success btn-sm">View Project</button>
-        <div class="mt-2 avatar-group">
+        <button type="button" class="mb-0 btn btn-outline-success btn-sm" @click="submit(item.id)">View More</button>
+        <!-- <div class="mt-2 avatar-group">
           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" :title="titleTeam1">
             <img alt="Image placeholder" :src="imgTeam1" />
           </a>
@@ -28,7 +28,7 @@
           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" :title="titleTeam4">
             <img alt="Image placeholder" :src="imgTeam4" />
           </a>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -38,6 +38,7 @@
 export default {
   name: 'projects-card',
   props: {
+    item: Object,
     img: String,
     number: Number,
     title: String,
@@ -50,6 +51,19 @@ export default {
     titleTeam2: String,
     titleTeam3: String,
     titleTeam4: String,
+  },
+  methods: {
+    removeTags(string) {
+      return !string
+        ? ''
+        : string
+            .replace(/<[^>]*>/g, ' ')
+            .replace(/\s{2,}/g, ' ')
+            .trim()
+    },
+    submit(id) {
+      this.$router.push({ path: `/topics/detail/${id}` })
+    },
   },
 }
 </script>
