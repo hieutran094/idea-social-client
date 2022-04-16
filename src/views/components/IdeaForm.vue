@@ -60,6 +60,8 @@
 import TopicService from '@/services/TopicService.js'
 import IdeaService from '@/services/IdeaService.js'
 import { serialize } from 'object-to-formdata'
+import moment from 'moment-timezone'
+moment().tz('Asia/Ho_Chi_Minh').format()
 export default {
   name: 'idea-form',
   data() {
@@ -69,7 +71,11 @@ export default {
     this.$store.dispatch('startLoading')
     try {
       const res = await TopicService.getAll(this.$axios)
-      if (res.success) this.topics = res.data
+      if (res.success)
+        this.topics = res.data.map((item) => {
+          item.disabled = moment() > moment(item.lock_date)
+          return item
+        })
       else throw res
     } catch (err) {
       this.$store.dispatch('handleNotifications', { message: typeof err === 'string' ? err : err.message })
@@ -84,7 +90,6 @@ export default {
         delete data.agree
         data.is_incognito = data.is_incognito ? 1 : 0
         const formData = serialize(data)
-        console.log(formData)
         const res = await IdeaService.createOne(this.$axios, formData)
         if (res.success) {
           this.$emit('close', true)
