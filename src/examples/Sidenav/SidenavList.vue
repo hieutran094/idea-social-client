@@ -48,6 +48,13 @@
         <h6 class="text-xs ps-4 text-uppercase font-weight-bolder opacity-6 ms-2">Manage</h6>
       </li>
       <li class="nav-item">
+        <sidenav-collapse navText="Report" :to="{ name: 'Report' }">
+          <template v-slot:icon>
+            <icon name="spaceship" />
+          </template>
+        </sidenav-collapse>
+      </li>
+      <li class="nav-item">
         <sidenav-collapse navText="Department" :to="{ name: 'List Department' }">
           <template v-slot:icon>
             <icon name="virtual-reality" />

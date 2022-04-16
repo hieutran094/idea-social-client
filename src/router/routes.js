@@ -1,4 +1,5 @@
 import Dashboard from '@/views/Dashboard.vue'
+import Report from '@/views/Report.vue'
 import Tables from '@/views/Tables.vue'
 import Billing from '@/views/Billing.vue'
 import VirtualReality from '@/views/VirtualReality.vue'
@@ -33,6 +34,14 @@ export default [
     path: '/topics/detail/:id',
     name: 'Topic Detail',
     component: TopicDetail,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/report',
+    name: 'Report',
+    component: Report,
     meta: {
       requiresAuth: true,
     },
