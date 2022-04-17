@@ -71,6 +71,9 @@
                           ><i class="fa fa-eye"></i> Ideas</vsud-button
                         ></router-link
                       >
+                      <vsud-button :disabled="!item.closed" color="secondary" variant="outline" class="mb-auto py-2 ms-2" @click="downloadZip(item.id)"
+                        ><i class="fa fa-cloud-download" aria-hidden="true"></i> Download</vsud-button
+                      >
                       <router-link :to="`/topic/edit/${item.id}`"
                         ><vsud-button color="secondary" variant="outline" class="mb-auto py-2 mx-2"
                           ><i class="fa fa-pencil"></i> Edit</vsud-button
@@ -111,6 +114,7 @@
 
 <script>
 import { defineComponent } from 'vue'
+import FileSaver from 'file-saver'
 import moment from 'moment-timezone'
 import TopicService from '@/services/TopicService.js'
 moment().tz('Asia/Ho_Chi_Minh').format()
@@ -132,6 +136,12 @@ export default defineComponent({
     },
   },
   methods: {
+    async downloadZip(id) {
+      this.$store.dispatch('startLoading')
+      const res = await TopicService.downloadZip(this.$axios, id)
+      FileSaver.saveAs(new Blob([res], { type: 'application/zip' }), `topic_${Date.now()}.zip`)
+      this.$store.dispatch('stopLoading')
+    },
     convertTime(time) {
       return moment(time).format('DD/MM/YYYY, HH:mm:ss')
     },
@@ -158,7 +168,10 @@ export default defineComponent({
         const res = await TopicService.search(this.$axios, this.$store, keyword)
         if (res.success) {
           const { data, lastPage } = res.data
-          this.topics = data
+          this.topics = data.map((item) => {
+            item.closed = moment() > moment(item.close_date)
+            return item
+          })
           this.lastPage = lastPage
         } else throw res
       } catch (err) {
