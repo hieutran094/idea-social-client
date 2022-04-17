@@ -44,14 +44,14 @@
         <div class="card z-index-2">
           <div class="p-3 card-body">
             <!-- chart -->
-            <department-idea-chart :labels="chartDepLabels" :data="chartDepData" />
+            <department-idea-chart :data="{ labels: chartDepLabels, data: chartDepData }" />
           </div>
         </div>
       </div>
       <div class="col-lg-7">
         <!-- line chart -->
         <div class="card z-index-2">
-          <gradient-line-chart />
+          <idea-by-day-chart :data="chartLinedata" />
         </div>
       </div>
     </div>
@@ -61,7 +61,7 @@
 import ReportService from '@/services/ReportService.js'
 import Card from '@/examples/Cards/Card.vue'
 import DepartmentIdeaChart from './components/DepartmentIdeaChart.vue'
-import GradientLineChart from '@/examples/Charts/GradientLineChart.vue'
+import IdeaByDayChart from './components/IdeaByDayChart.vue'
 import US from '../assets/img/icons/flags/US.png'
 import DE from '../assets/img/icons/flags/DE.png'
 import GB from '../assets/img/icons/flags/GB.png'
@@ -74,6 +74,7 @@ export default {
       overView: {},
       chartDepLabels: [],
       chartDepData: [],
+      chartLinedata: {},
       stats: {
         iconBackground: 'bg-gradient-success',
         money: {
@@ -137,7 +138,7 @@ export default {
   components: {
     Card,
     DepartmentIdeaChart,
-    GradientLineChart,
+    IdeaByDayChart,
   },
   async mounted() {
     await this.getOverView()
@@ -149,6 +150,7 @@ export default {
         const res = await ReportService.getOverView(this.$axios)
         if (res.success) {
           this.overView = res.data
+          this.chartLinedata = res.data.chartIdeaByDate
           this.chartDepLabels = res.data.chartDepartmentIdea.map((item) => {
             return item.name
           })

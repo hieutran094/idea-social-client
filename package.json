@@ -25,6 +25,7 @@
     "object-to-formdata": "^4.4.2",
     "vee-validate": "^4.5.10",
     "vue": "3.2.0",
+    "vue-chartjs": "^4.0.5",
     "vue-flatpickr-component": "9.0.5",
     "vue-loading-overlay": "^5.0.3",
     "vue-router": "^4.0.0-0",
