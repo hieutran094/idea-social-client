@@ -84,7 +84,7 @@ export default {
   watch: {
     user() {
       if (this.user) {
-        this.$router.push('/')
+        this.$router.push({ name: 'Newsfeed' })
       }
     },
   },
