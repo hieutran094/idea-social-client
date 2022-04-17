@@ -11,7 +11,13 @@
           <div class="card-body">
             <div class="d-flex align-items-center">
               <div class="user-img">
-                <img src="../assets/images/user/1.jpg" alt="userimg" class="avatar-60 rounded-circle" />
+                <img
+                  :src="
+                    avatarUrl ? avatarUrl : 'https://ideas-manager.s3.ap-southeast-1.amazonaws.com/files/b4e5f150-3863-49b1-a299-05a900066470.png'
+                  "
+                  alt="userimg"
+                  class="avatar-60 rounded-circle  avatar avatar-xxl"
+                />
               </div>
               <form class="post-text ms-3 w-100" action="javascript:void();">
                 <input type="text" class="form-control rounded" placeholder="Write something here..." style="border: none" @focus="openModal" />
@@ -60,7 +66,15 @@
             <div class="user-post-data">
               <div class="d-flex justify-content-between">
                 <div class="me-3">
-                  <img class="rounded-circle img-fluid" src="../assets/images/user/01.jpg" alt="" />
+                  <img
+                    :src="
+                      idea.author?.image?.source_url && !idea.is_incognito
+                        ? idea.author?.image?.source_url
+                        : 'https://ideas-manager.s3.ap-southeast-1.amazonaws.com/files/b4e5f150-3863-49b1-a299-05a900066470.png'
+                    "
+                    alt="userimg"
+                    class="avatar-25 rounded-circle avatar avatar-md"
+                  />
                 </div>
                 <div class="w-100">
                   <div class="d-flex justify-content-between">
@@ -115,7 +129,15 @@
                 <li class="mb-2" v-for="comment in idea.comments" :key="comment.id">
                   <div class="d-flex">
                     <div class="user-img">
-                      <img src="../assets/images/user/02.jpg" alt="userimg" class="avatar-25 rounded-circle img-fluid" />
+                      <img
+                        :src="
+                          comment.creator?.image?.source_url
+                            ? comment.creator?.image?.source_url
+                            : 'https://ideas-manager.s3.ap-southeast-1.amazonaws.com/files/b4e5f150-3863-49b1-a299-05a900066470.png'
+                        "
+                        alt="userimg"
+                        class="avatar-25 rounded-circle avatar avatar-sm"
+                      />
                     </div>
                     <div class="comment-data-block ms-3">
                       <h6>{{ comment.creator.user_name }}</h6>
@@ -221,6 +243,11 @@ export default defineComponent({
   components: { IdeaForm },
   data() {
     return { isValid: true, isOpenModal: false, page: 1, nextPage: null, lastPage: 0, ideas: [], topics: [], suggests: [], test: '' }
+  },
+  computed: {
+    avatarUrl() {
+      return this.$store.state.user?.image?.source_url
+    },
   },
   async mounted() {
     this.$store.dispatch('setPage', this.page)

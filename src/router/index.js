@@ -37,20 +37,26 @@ router.beforeEach(async (to, from, next) => {
       } else {
         const user = store.state.user
         if (to.matched.some((record) => record.meta.isAdmin)) {
-          if (user.role === 'admin') {
+          if (user.role === 1 || user.role === 9) {
             next()
           } else {
-            next({ name: 'Dashboard' })
+            next({ name: 'Newsfeed' })
+          }
+        } else if (to.matched.some((record) => record.meta.isQa)) {
+          if (user.role === 2 || user.role === 1 || user.role === 9) {
+            next()
+          } else {
+            next({ name: 'Newsfeed' })
           }
         } else {
-          if (user.role === 'admin' && to.matched.some((record) => record.name === 'Dashboard')) {
-            next({ name: 'Edit' })
+          if ((user.role === 1 || user.role === 9) && to.matched.some((record) => record.name === '/')) {
+            next({ name: 'Report' })
           } else next()
         }
       }
     } else {
       if (to.matched.some((record) => record.name === 'Sign In' || record.name === 'Sign Up') && (authenticated || localToken)) {
-        next({ name: '/', params: { nextUrl: to.fullPath } })
+        next({ name: 'Newsfeed', params: { nextUrl: to.fullPath } })
       } else next()
     }
   } catch (err) {

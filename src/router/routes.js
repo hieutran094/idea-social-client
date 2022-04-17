@@ -1,9 +1,4 @@
-import Dashboard from '@/views/Dashboard.vue'
 import Report from '@/views/Report.vue'
-import Tables from '@/views/Tables.vue'
-import Billing from '@/views/Billing.vue'
-import VirtualReality from '@/views/VirtualReality.vue'
-import Profile from '@/views/Profile.vue'
 import SignIn from '@/views/SignIn.vue'
 import SignUp from '@/views/SignUp.vue'
 import Newsfeed from '@/views/Newsfeed.vue'
@@ -16,6 +11,9 @@ import ListTopic from '@/views/topic/Index.vue'
 import CreateTopic from '@/views/topic/Create.vue'
 import EditTopic from '@/views/topic/Edit.vue'
 import ListIdea from '@/views/idea/Index.vue'
+import ListUser from '@/views/user/Index.vue'
+import CreateUser from '@/views/user/Create.vue'
+import EditUser from '@/views/user/Edit.vue'
 export default [
   {
     path: '/',
@@ -44,14 +42,7 @@ export default [
     component: Report,
     meta: {
       requiresAuth: true,
-    },
-  },
-  {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: Dashboard,
-    meta: {
-      requiresAuth: true,
+      isAdmin: true,
     },
   },
   {
@@ -60,6 +51,7 @@ export default [
     component: ListDepartment,
     meta: {
       requiresAuth: true,
+      isAdmin: true,
     },
   },
   {
@@ -68,6 +60,7 @@ export default [
     component: EditDepartment,
     meta: {
       requiresAuth: true,
+      isAdmin: true,
     },
   },
   {
@@ -76,6 +69,34 @@ export default [
     component: CreateDepartment,
     meta: {
       requiresAuth: true,
+      isAdmin: true,
+    },
+  },
+  {
+    path: '/user',
+    name: 'List User',
+    component: ListUser,
+    meta: {
+      requiresAuth: true,
+      isAdmin: true,
+    },
+  },
+  {
+    path: '/user/edit/:id',
+    name: 'Edit User',
+    component: EditUser,
+    meta: {
+      requiresAuth: true,
+      isAdmin: true,
+    },
+  },
+  {
+    path: '/user/create',
+    name: 'Create User',
+    component: CreateUser,
+    meta: {
+      requiresAuth: true,
+      isAdmin: true,
     },
   },
   {
@@ -84,6 +105,7 @@ export default [
     component: ListTopic,
     meta: {
       requiresAuth: true,
+      isQa: true,
     },
   },
   {
@@ -92,6 +114,7 @@ export default [
     component: EditTopic,
     meta: {
       requiresAuth: true,
+      isQa: true,
     },
   },
   {
@@ -100,6 +123,7 @@ export default [
     component: CreateTopic,
     meta: {
       requiresAuth: true,
+      isQa: true,
     },
   },
   {
@@ -108,6 +132,7 @@ export default [
     component: ListIdea,
     meta: {
       requiresAuth: true,
+      isQa: true,
     },
   },
   {
@@ -117,26 +142,6 @@ export default [
     meta: {
       requiresAuth: true,
     },
-  },
-  {
-    path: '/tables',
-    name: 'Tables',
-    component: Tables,
-  },
-  {
-    path: '/billing',
-    name: 'Billing',
-    component: Billing,
-  },
-  {
-    path: '/virtual-reality',
-    name: 'Virtual Reality',
-    component: VirtualReality,
-  },
-  {
-    path: '/profile',
-    name: 'Profile',
-    component: Profile,
   },
   {
     path: '/sign-in',
