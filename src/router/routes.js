@@ -14,6 +14,7 @@ import ListIdea from '@/views/idea/Index.vue'
 import ListUser from '@/views/user/Index.vue'
 import CreateUser from '@/views/user/Create.vue'
 import EditUser from '@/views/user/Edit.vue'
+import TermsAndCondition from '@/views/TermsAndCondition.vue'
 export default [
   {
     path: '/',
@@ -152,5 +153,10 @@ export default [
     path: '/sign-up',
     name: 'Sign Up',
     component: SignUp,
+  },
+  {
+    path: '/terms',
+    name: 'Terms And Condition',
+    component: TermsAndCondition,
   },
 ]

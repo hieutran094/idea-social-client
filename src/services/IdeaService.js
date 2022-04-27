@@ -7,10 +7,15 @@ export default {
     const res = await axios.get('/api/v1/idea')
     return res.data
   },
+  async topView(axios) {
+    const res = await axios.get('/api/v1/idea/topview')
+    return res.data
+  },
   async search(axios, store, param) {
     const query = []
     query.push(`limit=${store.state.limit || 10}`)
     query.push(`page=${store.state.page || 1}`)
+    if (param.id) query.push(`id=${param.id}`)
     if (param.rand) query.push(`rand=${param.rand}`)
     if (param.topicId) query.push(`topicId=${param.topicId}`)
     if (param.keyword) query.push(`keyword=${param.keyword}`)

@@ -11,7 +11,7 @@
     <ul class="d-flex flex-wrap align-items-center list-inline m-0 p-0">
       <li class="col-md-6 mb-3">
         <div class="bg-soft-primary rounded p-2 pointer me-3 row">
-          <vsud-file class="col-8 mb-0" name="image_id" aria-label="Image" rules="required|image" />
+          <vsud-file class="col-8 mb-0" name="image_id" aria-label="Image" rules="image" />
           <span class="col-4 d-block d-flex align-items-center"
             ><img src="../../assets/images/small/07.png" alt="icon" class="img-fluid" /> Photo</span
           >
@@ -30,7 +30,7 @@
             class="col-8 mb-0"
             name="document_id"
             aria-label="Image"
-            rules="required|document"
+            rules="document"
             :accept="'.xlsx,.xls,.doc, .docx,.ppt, .pptx,.txt,.pdf'"
           />
           <span class="col-4 d-block d-flex align-items-center"
@@ -49,7 +49,7 @@
     </ul>
     <vsud-checkbox v-model:checked="isAgree" name="agree">
       I agree the
-      <a href="javascript:;" class="text-dark font-weight-bolder">Terms and Conditions</a>
+      <a :href="$router.resolve({ path: '/terms' }).href" target="_blank">Terms and Conditions</a>
     </vsud-checkbox>
     <hr />
     <button type="submit" class="btn btn-primary d-block w-100 mt-3" :disabled="isDisableSubmit(meta.valid)">Post</button>

@@ -14,6 +14,7 @@ export default {
     })
     defineRule('document', (value) => {
       const re = /(\.xlsx|\.xls|\.doc|\.docx|\.ppt|\.pptx|\.txt|\.pdf)$/i
+      if (!value) return true
       if (!re.exec(value.name)) {
         return 'document is not valid.'
       }

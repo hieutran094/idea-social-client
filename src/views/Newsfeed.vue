@@ -16,7 +16,7 @@
                     avatarUrl ? avatarUrl : 'https://ideas-manager.s3.ap-southeast-1.amazonaws.com/files/b4e5f150-3863-49b1-a299-05a900066470.png'
                   "
                   alt="userimg"
-                  class="avatar-60 rounded-circle  avatar avatar-xxl"
+                  class="avatar-60 rounded-circle avatar avatar-xxl"
                 />
               </div>
               <form class="post-text ms-3 w-100" action="javascript:void();">
@@ -161,9 +161,20 @@
             </div>
           </div>
         </div>
-        <span class="text-center d-block" v-if="nextPage"
+        <vsud-pagination :position="'center'">
+          <vsud-pagination-item prev :disabled="currentPage === 1" @click="changePage(currentPage - 1)"></vsud-pagination-item>
+          <vsud-pagination-item
+            v-for="(n, index) in paginationItems"
+            :key="index"
+            :label="n"
+            :active="currentPage === n"
+            @click="changePage(n)"
+          ></vsud-pagination-item>
+          <vsud-pagination-item next :disabled="currentPage === lastPage" @click="changePage(currentPage + 1)"></vsud-pagination-item>
+        </vsud-pagination>
+        <!-- <span class="text-center d-block" v-if="nextPage"
           ><p role="button" @click="loadMore(nextPage)"><i class="fa fa-spinner" aria-hidden="true"></i> Loadmore</p></span
-        >
+        > -->
       </div>
       <div class="col-md-4">
         <div class="card card-block card-stretch mb-3">
@@ -193,7 +204,7 @@
         <div class="card card-block card-stretch mb-3">
           <div class="card-header d-flex justify-content-between">
             <div class="header-title">
-              <h4 class="card-title">Suggested Ideas</h4>
+              <h4 class="card-title">Top ideas</h4>
             </div>
           </div>
           <div class="card-body">
@@ -215,7 +226,7 @@
                 <img v-else src="../assets/images/page-img/empty.png" class="img-fluid rounded" alt="Responsive image" />
 
                 <div class="mt-3">
-                  <a href="#" class="btn d-block"><i class="ri-thumb-up-line me-2"></i> Read More</a>
+                  <a href="#" class="btn d-block" @click="readMore(idea.id)"><i class="ri-thumb-up-line me-2"></i> Read More</a>
                 </div>
               </li>
             </ul>
@@ -248,6 +259,12 @@ export default defineComponent({
     avatarUrl() {
       return this.$store.state.user?.image?.source_url
     },
+    currentPage() {
+      return this.$store.state.page
+    },
+    paginationItems() {
+      return this.paginate(this.currentPage, this.lastPage, 1)
+    },
   },
   async mounted() {
     this.$store.dispatch('setPage', this.page)
@@ -257,10 +274,31 @@ export default defineComponent({
     if (success) this.topics = data.data
   },
   methods: {
+    async changePage(number) {
+      if (number <= 0 || number > this.lastPage) return
+      this.$store.dispatch('setPage', number)
+      await this.search({}, true)
+    },
+    paginate(currentPage, lastPage, onSides = 3) {
+      let pages = []
+      for (let i = 1; i <= lastPage; i++) {
+        let offset = i === 1 || lastPage ? onSides + 1 : onSides
+        if (i === 1 || (currentPage - offset <= i && currentPage + offset >= i) || i == currentPage || i == lastPage) {
+          pages.push(i)
+        } else if (i == currentPage - (offset + 1) || i == currentPage + (offset + 1)) {
+          pages.push('...')
+        }
+      }
+      return pages
+    },
     async loadMore(number) {
       if (!number || number <= 0 || number > this.lastPage) return
       this.$store.dispatch('setPage', number)
       await this.search()
+    },
+    async readMore(id) {
+      this.$store.dispatch('setPage', 1)
+      await this.search({ id }, true)
     },
     async searchByTopic(topicId) {
       this.$store.dispatch('setPage', 1)
@@ -269,10 +307,9 @@ export default defineComponent({
     async searchRandom() {
       this.$store.dispatch('startLoading')
       try {
-        const res = await IdeaService.search(this.$axios, this.$store, { rand: true })
+        const res = await IdeaService.topView(this.$axios)
         if (res.success) {
-          const { data } = res.data
-          this.suggests = data
+          this.suggests = res.data
         } else throw res
       } catch (err) {
         this.$store.dispatch('handleNotifications', { message: typeof err === 'string' ? err : err.message })

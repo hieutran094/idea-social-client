@@ -1,5 +1,5 @@
 <template>
-  <ul class="pagination d-flex justify-content-end px-4 mt-1" :class="getClasses(color, size)">
+  <ul class="pagination d-flex px-4 mt-1" :class="getClasses(color, size, position)">
     <slot />
   </ul>
 </template>
@@ -10,15 +10,20 @@ export default {
   props: {
     color: String,
     size: String,
+    position: {
+      type: String,
+      default: 'end',
+    },
   },
   methods: {
-    getClasses: (color, size) => {
-      let colorValue, sizeValue
+    getClasses: (color, size, position) => {
+      let colorValue, sizeValue, ps
 
       colorValue = color ? `pagination-${color}` : null
       sizeValue = size ? `pagination-${size}` : null
+      ps = position ? `justify-content-${position}` : 'justify-content-end'
 
-      return `${colorValue} ${sizeValue}`
+      return `${colorValue} ${sizeValue} ${ps}`
     },
   },
 }
