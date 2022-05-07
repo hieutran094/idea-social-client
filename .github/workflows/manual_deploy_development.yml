@@ -1,4 +1,4 @@
-name: Auto deploy to Development
+name: Manual deploy to Development
 
 on: workflow_dispatch
 

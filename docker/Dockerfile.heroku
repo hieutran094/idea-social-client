@@ -1,12 +1,11 @@
 # buid production code
-FROM node:12.22-alpine as builder
+FROM node:14.5.0-alpine as builder
 
 WORKDIR /app
 
 COPY package*.json ./
-COPY yarn.lock ./
 
-RUN yarn --frozen-lockfile --ignore-optional
+RUN yarn install
 
 COPY . .
 
