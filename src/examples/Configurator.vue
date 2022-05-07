@@ -6,7 +6,7 @@
     <div class="shadow-lg card blur">
       <div class="pt-3 pb-0 bg-transparent card-header">
         <div class="float-start">
-          <h5 class="mt-3 mb-0">Soft UI Configurator</h5>
+          <h5 class="mt-3 mb-0">Dashboard Configurator</h5>
           <p>See our dashboard options.</p>
         </div>
         <div class="mt-4 float-end" @click="toggle">

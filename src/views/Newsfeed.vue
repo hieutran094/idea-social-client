@@ -191,14 +191,23 @@
                 :key="topic.id"
                 @click="searchByTopic(topic.id)"
               >
-                <img src="../assets/images/page-img/s2.jpg" alt="story-img" class="rounded img-fluid" />
+                <div
+                  class="rounded img-fluid avatar avatar-md"
+                  :style="{
+                    minHeight: '100%',
+                    backgroundImage: `url(${topic?.image?.source_url ? topic?.image?.source_url : '../assets/images/page-img/empty.png'})`,
+                    backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: ' center center',
+                  }"
+                ></div>
                 <div class="stories-data ms-3">
                   <h5>{{ topic.name }}</h5>
                   <p class="mb-0">{{ convertTime(topic.created_at) }}</p>
                 </div>
               </li>
             </ul>
-            <a href="#" class="btn btn-primary d-block mt-3">See All</a>
+            <router-link to="/topics" class="btn btn-primary d-block mt-3">See All</router-link>
           </div>
         </div>
         <div class="card card-block card-stretch mb-3">
